@@ -25,18 +25,24 @@ export const getById = async (req, res) => {
   }
 };
 
+export const getFavourites = async (req, res) => {
+  try {
+    const favoriteContacts = await Contact.find({ isFavorite: true });
+    return res.json(favoriteContacts);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const createContact = async (req, res) => {
   try {
     const { name, email, phone } = req.body;
-    if (!name || (!email && !phone))
-      return res
-        .status(400)
-        .json({ error: "Required fields: name and phone or email!" });
 
     await Joi.object({
       name: Joi.string().required(),
-      email: Joi.string().email(),
-      phone: Joi.string(),
+      email: Joi.string().email().required(),
+      phone: Joi.string().required(),
+      isFavorite: Joi.boolean(),
     }).validateAsync(req.body);
 
     const createdContact = await Contact.create({ name, email, phone });
@@ -56,6 +62,7 @@ export const updateById = async (req, res) => {
       name: Joi.string(),
       email: Joi.string().email(),
       phone: Joi.string(),
+      isFavorite: Joi.boolean(),
     }).validateAsync(updatedContactFields);
 
     const updatedContact = await Contact.findOneAndUpdate(
@@ -63,6 +70,7 @@ export const updateById = async (req, res) => {
       updatedContactFields,
       { new: true }
     );
+
     return res.json(updatedContact);
   } catch (error) {
     return res.status(400).json({ error: error.message });

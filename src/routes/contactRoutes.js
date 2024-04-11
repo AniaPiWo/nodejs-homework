@@ -6,9 +6,11 @@ import * as contactController from "../controllers/contactController.js";
 const router = Router();
 
 router.get("/", contactController.getAll);
+router.get("/favourites", contactController.getFavourites);
 router.get("/:id", contactController.getById);
 router.post("/", contactController.createContact);
 router.put("/:id", contactController.updateById);
+router.patch("/:id", contactController.updateById);
 router.delete("/:id", contactController.deleteById);
 
 export default router;
