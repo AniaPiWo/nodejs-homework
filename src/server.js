@@ -22,7 +22,8 @@ server.listen(PORT, async () => {
   try {
     console.log("Connecting to MongoDB...");
     await mongoose.connect(process.env.MONGODB_URL, {
-      dbName: "db-contacts",
+      // dbName: "db-contacts",
+      dbName: "posts",
     });
     console.log(
       chalk.magenta(
