@@ -20,15 +20,6 @@ app.get("/posts", authenticateToken, (req, res) => {
   res.json(posts.filter((post) => post.username === req.user.name));
 });
 
-// Login route
-// Authentication: The process of verifying a user's identity, often performed through logging in.
-app.post("/login", (req, res) => {
-  const username = req.body.username;
-  const user = { name: username };
-  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-  res.json({ accessToken: accessToken });
-});
-
 // Middleware to authenticate token - we get token from the header and verify it
 function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization;
