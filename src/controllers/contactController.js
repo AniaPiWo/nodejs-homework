@@ -38,13 +38,13 @@ export const createContact = async (req, res) => {
   try {
     const { name, email, phone } = req.body;
 
-    /*    await Joi.object({
+    await Joi.object({
       name: Joi.string().required(),
       email: Joi.string().email().required(),
       phone: Joi.string().required(),
       isFavorite: Joi.boolean(),
     }).validateAsync(req.body);
- */
+
     const createdContact = await Contact.create({ name, email, phone });
 
     return res.status(201).json(createdContact);
