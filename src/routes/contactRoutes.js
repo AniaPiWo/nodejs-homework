@@ -8,7 +8,6 @@ import { Contact } from "../models/contactModel.js";
 const router = Router();
 
 router.get("/", paginatedResults(Contact), contactController.getAll);
-router.get("/search", contactController.getPaginated);
 router.get("/favourites", contactController.getFavourites);
 router.get("/:id", contactController.getById);
 router.post("/", contactController.createContact);
