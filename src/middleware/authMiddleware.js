@@ -18,19 +18,6 @@ const authMiddleware = async (req, res, next) => {
       return res.status(401).json({ message: "No such user" });
     }
 
-    console.log(
-      "user.token => ",
-      user.token,
-      "user =>",
-      user,
-      "decoded => ",
-      decoded,
-      "splitToken => ",
-      splitToken,
-      "token =>",
-      token
-    );
-
     if (user.token !== splitToken) {
       return res.status(401).json({ message: "Invalid token" });
     }

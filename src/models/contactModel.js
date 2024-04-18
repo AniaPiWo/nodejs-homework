@@ -35,7 +35,7 @@ export const contactJoiSchema = Joi.object({
   phone: Joi.string(),
   isFavorite: Joi.boolean(),
   dateCreate: Joi.date(),
-  //owner: Joi.string(),
+  owner: Joi.string(),
 });
 
 export const Contact = mongoose.model("Contact", contactSchema);

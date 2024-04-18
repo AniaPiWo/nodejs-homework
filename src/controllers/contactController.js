@@ -14,6 +14,40 @@ export const getAll = async (req, res) => {
   }
 };
 
+/* export const getPaginated = async (req, res) => {
+  let contacts;
+  const page = parseInt(req.query.page);
+  const limit = parseInt(req.query.limit);
+
+  let startIndex = (page - 1) * limit;
+  let endIndex = page * limit;
+
+  try {
+    contacts = await Contact.find({}).sort({ createdAt: "desc" });
+
+    const results = {};
+
+    if (endIndex < contacts.length) {
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+
+    if (startIndex > 0) {
+      results.prev = {
+        page: page - 1,
+        limit: limit,
+      };
+    }
+
+    results.contacts = contacts.slice(startIndex, endIndex);
+
+    return res.json({ results });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}; */
 export const getById = async (req, res) => {
   try {
     const id = req.params.id;

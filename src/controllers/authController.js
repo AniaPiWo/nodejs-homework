@@ -52,3 +52,20 @@ export const login = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const logout = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    user.token = null;
+    await user.save();
+
+    return res.status(204).json({ message: "Logout successful" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
