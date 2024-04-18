@@ -21,6 +21,7 @@ export default function paginatedResults(model) {
         limit: limit,
       };
     }
+
     try {
       results.results = await model.find().limit(limit).skip(startIndex).exec();
       res.paginatedResults = results;
