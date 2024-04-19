@@ -2,10 +2,12 @@
 
 import { Router } from "express";
 import * as contactController from "../controllers/contactController.js";
+import paginatedResults from "../config/pagination.js";
+import { Contact } from "../models/contactModel.js";
 
 const router = Router();
 
-router.get("/", contactController.getAll);
+router.get("/", paginatedResults(Contact), contactController.getAll);
 router.get("/favourites", contactController.getFavourites);
 router.get("/:id", contactController.getById);
 router.post("/", contactController.createContact);

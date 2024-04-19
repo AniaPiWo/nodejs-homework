@@ -4,11 +4,10 @@ import { Contact } from "../models/contactModel.js";
 import Joi from "joi";
 
 export const getAll = async (req, res) => {
-  let contacts;
   try {
-    contacts = await Contact.find({}).sort({ createdAt: "desc" });
+    const { results, previous, next } = res.paginatedResults;
 
-    return res.json({ contacts });
+    return res.json({ results, previous, next });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

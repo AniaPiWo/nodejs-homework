@@ -6,12 +6,12 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./src/server.js",
     "dev": "cross-env NODE_ENV=development nodemon ./src/server.js",
-    "dev2": "cross-env NODE_ENV=development nodemon ./src/server2.js",
-    "dev3": "cross-env NODE_ENV=development nodemon ./src/server3.js",
     "lint": "eslint **/*.js",
     "lint:fix": "eslint --fix **/*.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "bcrypt": "^5.1.1",
     "chalk": "^5.3.0",
     "cors": "2.8.5",
     "cross-env": "7.0.3",
@@ -23,6 +23,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.1",
     "morgan": "1.10.0",
+    "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
     "path": "^0.12.7",
     "uuid": "^9.0.1"
   },

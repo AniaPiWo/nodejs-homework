@@ -23,14 +23,19 @@ const contactSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+  },
 });
-
 export const contactJoiSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email(),
   phone: Joi.string(),
   isFavorite: Joi.boolean(),
   dateCreate: Joi.date(),
+  owner: Joi.string(),
 });
 
 export const Contact = mongoose.model("Contact", contactSchema);
