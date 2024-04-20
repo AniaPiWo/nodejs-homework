@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import jwt from "jsonwebtoken";
+import gravatar from "gravatar";
 
 export async function signup(req, res, next) {
   const { email, password, subscription } = req.body;
@@ -9,8 +10,13 @@ export async function signup(req, res, next) {
     if (user) {
       return res.status(409).json({ message: "Email already taken" });
     }
+    const avatarURL = gravatar.url(email, {
+      s: "200",
+      r: "pg",
+      d: "identicon",
+    });
 
-    const newUser = new User({ email, subscription });
+    const newUser = new User({ email, subscription, avatarURL });
     await newUser.setPassword(password);
     await newUser.save();
 

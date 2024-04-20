@@ -1,13 +1,12 @@
 // Controllers are responsible for handling HTTP requests, processing business logic, and rendering responses. In your application
-
 import { Contact } from "../models/contactModel.js";
 import Joi from "joi";
 
 export const getAll = async (req, res) => {
   try {
-    const { results, previous, next } = res.paginatedResults;
+    const { results, previous, current, next } = res.paginatedResults;
 
-    return res.json({ results, previous, next });
+    return res.json({ results, previous, current, next });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
