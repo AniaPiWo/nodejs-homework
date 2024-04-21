@@ -1,22 +1,18 @@
 import express from "express";
 import logger from "morgan";
 import cors from "cors";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
 import chalk from "chalk";
 import app from "./app.js";
 import jwtStrategy from "./config/jwt.js";
 import { setupFolder, tempDir, storeImageDir } from "./middleware/multer.js";
+import { connectDB } from "./db.js";
 
 dotenv.config();
 
-const PORT = 3000;
-const DB = process.env.DB_URL;
+const PORT = 8000;
 
 const server = express();
-
-// view engine setup
-server.set("view engine", "ejs");
 
 // middlewares
 server.use(logger("dev"));
@@ -32,11 +28,10 @@ server.listen(PORT, async () => {
   try {
     await setupFolder(tempDir);
     await setupFolder(storeImageDir);
-    console.log("Connecting to MongoDB...");
-    await mongoose.connect(DB);
-    console.log(chalk.magenta(`MongoDB connected, port: ${PORT}`));
+    await connectDB();
+    console.log(chalk.magenta(`Server running on port: ${PORT}`));
   } catch (error) {
-    console.log(chalk.red("MongoDB connection failed: ", error));
+    console.error(chalk.red("Server initialization failed: ", error));
     process.exit(1);
   }
 });
