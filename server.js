@@ -3,10 +3,14 @@ import logger from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
 import chalk from "chalk";
-import app from "./app.js";
-import jwtStrategy from "./config/jwt.js";
-import { setupFolder, tempDir, storeImageDir } from "./middleware/multer.js";
-import { connectDB } from "./db.js";
+import app from "./src/app.js";
+import jwtStrategy from "./src/config/jwt.js";
+import {
+  setupFolder,
+  tempDir,
+  storeImageDir,
+} from "./src/middleware/multer.js";
+import { connectDB } from "./src/config/db.js";
 
 dotenv.config();
 

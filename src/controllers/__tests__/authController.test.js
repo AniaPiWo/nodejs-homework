@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import app from "../../app";
 import User from "../../models/userModel";
-import { connectDB, disconnectDB } from "../../db.js";
+import { connectDB, disconnectDB } from "../../config/db.js";
 
 describe("Auth controller test", () => {
   beforeAll(async () => {
