@@ -2,8 +2,7 @@ import User from "../models/userModel.js";
 import path from "path";
 import { v4 as uuidV4 } from "uuid";
 import fs from "fs/promises";
-import { upload, tempDir, storeImageDir } from "../middleware/multer.js";
-import isImageAndTransform from "../config/jimp.js";
+import { storeImageDir } from "../middleware/multer.js";
 
 export const myAccount = async (req, res) => {
   try {

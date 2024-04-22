@@ -10,7 +10,7 @@ import { connectDB } from "./db.js";
 
 dotenv.config();
 
-const PORT = 8000;
+const PORT = process.env.PORT || 3000;
 
 const server = express();
 

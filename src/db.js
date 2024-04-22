@@ -12,3 +12,14 @@ export async function connectDB() {
     process.exit(1);
   }
 }
+
+export async function disconnectDB() {
+  try {
+    console.log("Disconnecting from MongoDB...");
+    await mongoose.disconnect();
+    console.log(chalk.magenta("MongoDB disconnected successfully"));
+  } catch (error) {
+    console.error(chalk.red("MongoDB disconnection failed: ", error));
+    process.exit(1);
+  }
+}
