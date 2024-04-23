@@ -14,7 +14,7 @@ export const myAccount = async (req, res) => {
     const userResponse = {
       email: user.email,
       subscription: user.subscription,
-      avatar: user.avatarURL,
+      avatar: user.avatar,
     };
 
     return res.status(200).json(userResponse);
@@ -86,6 +86,9 @@ export const updateAvatar = async (req, res) => {
     const user = await User.findById(id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
     }
 
     if (req.file) {
