@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 
 export async function signup(req, res, next) {
+  console.log(req.body);
   const { email, password, subscription } = req.body;
 
   try {
