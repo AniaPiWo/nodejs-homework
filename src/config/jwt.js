@@ -1,6 +1,6 @@
 import passport from "passport";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
-import User from "../models/userModel.js";
+import { User } from "../models/userModel.js";
 
 export default function setJWTStrategy() {
   const secret = process.env.SECRET;

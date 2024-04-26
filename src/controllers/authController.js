@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import { User, userJoiSchema } from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
 import { v4 as uuidv4 } from "uuid";
@@ -15,10 +15,15 @@ export async function signup(req, res, next) {
   const { email, password, subscription } = req.body;
 
   try {
+    const { error } = userJoiSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ error: error.details[0].message });
+    }
     const user = await User.findOne({ email }).lean();
     if (user) {
       return res.status(409).json({ message: "Email already taken" });
     }
+
     const verificationToken = uuidv4();
     const avatar = gravatar.url(email, {
       s: "200",
@@ -32,6 +37,7 @@ export async function signup(req, res, next) {
       avatar,
       verificationToken,
     });
+
     await newUser.setPassword(password);
     await newUser.save();
 
@@ -95,7 +101,7 @@ export const login = async (req, res) => {
 export const verify = async (req, res) => {
   try {
     const { verificationToken } = req.params;
-    console.log(verificationToken);
+
     const user = await User.findOne({ verificationToken });
 
     if (!user) {
@@ -109,7 +115,7 @@ export const verify = async (req, res) => {
     return res.json({ success: true, message: "User verified successfully" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Server Error" });
+    return res.status(500).json({ error: error.message });
   }
 };
 

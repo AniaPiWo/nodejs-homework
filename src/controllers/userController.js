@@ -1,4 +1,4 @@
-import User from "../models/userModel.js";
+import { User } from "../models/userModel.js";
 import path from "path";
 import { v4 as uuidV4 } from "uuid";
 import fs from "fs/promises";

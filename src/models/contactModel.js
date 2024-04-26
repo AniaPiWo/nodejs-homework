@@ -1,5 +1,4 @@
 // Models represent the data structure of your application and provide an interface for communication with the database.
-
 import mongoose, { Schema } from "mongoose";
 import Joi from "joi";
 
@@ -24,12 +23,12 @@ const contactSchema = new Schema({
     default: Date.now(),
   },
   owner: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: "user",
     required: true,
   },
 });
-export const contactJoiSchema = Joi.object({
+const contactJoiSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email(),
   phone: Joi.string(),
@@ -38,4 +37,6 @@ export const contactJoiSchema = Joi.object({
   owner: Joi.string(),
 });
 
-export const Contact = mongoose.model("Contact", contactSchema);
+const Contact = mongoose.model("Contact", contactSchema);
+
+export { Contact, contactJoiSchema };
