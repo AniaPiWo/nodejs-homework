@@ -18,6 +18,13 @@ const PORT = process.env.PORT || 3000;
 
 const server = express();
 
+/* client.sendEmail({
+  From: "sklep@polskieplaszcze.pl",
+  To: "allsdegro@polskieplaszcze.pl",
+  Subject: "Test",
+  TextBody: "Hello from Postmark!",
+}); */
+
 // middlewares
 server.use(logger("dev"));
 server.use(cors());
