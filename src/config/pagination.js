@@ -6,7 +6,9 @@ export default function paginatedResults(model) {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    const results = {};
+    const results = {
+      currentPage: page,
+    };
 
     if (endIndex < (await model.countDocuments().exec())) {
       results.next = {
@@ -23,6 +25,10 @@ export default function paginatedResults(model) {
     }
 
     try {
+      results.current = {
+        page: page,
+      };
+
       results.results = await model.find().limit(limit).skip(startIndex).exec();
       res.paginatedResults = results;
       next();
