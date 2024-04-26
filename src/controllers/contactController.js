@@ -1,12 +1,17 @@
 // Controllers are responsible for handling HTTP requests, processing business logic, and rendering responses. In your application
-import { Contact } from "../models/contactModel.js";
+import { Contact, contactJoiSchema } from "../models/contactModel.js";
+import { User } from "../models/userModel.js";
 import Joi from "joi";
 
 export const getAll = async (req, res) => {
+  const owner = req.user._id;
+
   try {
     const { results, previous, current, next } = res.paginatedResults;
 
-    return res.json({ results, previous, current, next });
+    const ownerContacts = results.filter((result) => result.owner == owner);
+
+    return res.json({ results: ownerContacts, previous, current, next });
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
@@ -14,8 +19,9 @@ export const getAll = async (req, res) => {
 
 export const getById = async (req, res) => {
   try {
+    const owner = req.user._id;
     const id = req.params.id;
-    const reqContact = await Contact.findOne({ _id: id });
+    const reqContact = await Contact.findOne({ _id: id, owner });
     if (!reqContact) return res.sendStatus(404);
     return res.json(reqContact);
   } catch (error) {
@@ -25,7 +31,8 @@ export const getById = async (req, res) => {
 
 export const getFavourites = async (req, res) => {
   try {
-    const favoriteContacts = await Contact.find({ isFavorite: true });
+    const owner = req.user._id;
+    const favoriteContacts = await Contact.find({ isFavorite: true, owner });
     return res.json(favoriteContacts);
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -33,17 +40,16 @@ export const getFavourites = async (req, res) => {
 };
 
 export const createContact = async (req, res) => {
+  const owner = req.user._id;
+
+  const { name, email, phone } = req.body;
   try {
-    const { name, email, phone } = req.body;
+    const { error } = contactJoiSchema.validate(req.body);
+    if (error) {
+      throw new Error(error.details[0].message);
+    }
 
-    await Joi.object({
-      name: Joi.string().required(),
-      email: Joi.string().email().required(),
-      phone: Joi.string().required(),
-      isFavorite: Joi.boolean(),
-    }).validateAsync(req.body);
-
-    const createdContact = await Contact.create({ name, email, phone });
+    const createdContact = await Contact.create({ name, email, phone, owner });
 
     return res.status(201).json(createdContact);
   } catch (error) {
@@ -52,19 +58,17 @@ export const createContact = async (req, res) => {
 };
 
 export const updateById = async (req, res) => {
+  const { error } = contactValidationSchema.validate(req.body);
+  if (error) {
+    throw new Error(error.details[0].message);
+  }
   try {
+    const owner = req.user._id;
     const id = req.params.id;
     const updatedContactFields = req.body;
 
-    await Joi.object({
-      name: Joi.string(),
-      email: Joi.string().email(),
-      phone: Joi.string(),
-      isFavorite: Joi.boolean(),
-    }).validateAsync(updatedContactFields);
-
     const updatedContact = await Contact.findOneAndUpdate(
-      { _id: id },
+      { _id: id, owner },
       updatedContactFields,
       { new: true }
     );
@@ -74,11 +78,11 @@ export const updateById = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
-
 export const deleteById = async (req, res) => {
   try {
+    const owner = req.user._id;
     const id = req.params.id;
-    const deletedContact = await Contact.findOneAndDelete({ _id: id });
+    const deletedContact = await Contact.findOneAndDelete({ _id: id, owner });
     if (!deletedContact) return res.sendStatus(404);
     return res.json(deletedContact);
   } catch (error) {
@@ -88,6 +92,7 @@ export const deleteById = async (req, res) => {
 
 export const favoriteSet = async (req, res) => {
   try {
+    const owner = req.user._id;
     const id = req.params.id;
     const { isFavorite } = req.body;
 
@@ -98,7 +103,7 @@ export const favoriteSet = async (req, res) => {
     await Joi.boolean().required().validateAsync(isFavorite);
 
     const updatedContact = await Contact.findOneAndUpdate(
-      { _id: id },
+      { _id: id, owner },
       { isFavorite },
       { new: true }
     );
